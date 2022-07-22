@@ -38,23 +38,28 @@ export class Stats extends Contract {
     });
   }
 
-  private _getPosition(data: any) {
-    const position = data.closedPrice == 0 ? null : Position[data.position];
-    return {
-      epoch: data.epoch.toNumber(),
-      openTime: data.openTime.toNumber(),
-      closeTime: data.closeTime.toNumber(),
-      lockedPrice: formatUnits(data.lockedPrice, 8),
-      closedPrice: formatUnits(data.closedPrice, 8),
-      stakes: formatEther(data.stakes),
-      count: data.count.toNumber(),
-      price: formatUnits(data.price, 8),
-      position: position,
-      up: data.up.count.toNumber(),
-      down: data.down.count.toNumber(),
-      flat: data[11].count.toNumber(),
-      status: data.lockedPrice == 0 ? 'Predicting' : data.closedPrice == 0 ? 'Proceeding' : 'Closed',
-    };
+  private async _getPosition(pool:string, asset:string, data: any):Promise<any> {
+    const contract = this.getContractFromAbi(pool, this.getAbi('PositionPool'));
+    const position:any =   {
+        epoch: data.epoch.toString().padStart(4, '0'),
+        openTime: data.openTime.toNumber(),
+        closeTime: data.closeTime.toNumber(),
+        lockedPrice: formatUnits(data.lockedPrice, 8),
+        closedPrice: formatUnits(data.closedPrice, 8),
+        stakes: formatEther(data.stakes),
+        count: data.count.toNumber(),
+        price: formatUnits(data.price, 8),
+        rewards: '0.0',
+        position: data.closedPrice == 0 ? null : Position[data.position],
+        up: data.up.count.toNumber(),
+        down: data.down.count.toNumber(),
+        flat: data[11].count.toNumber(),
+        status: data.lockedPrice == 0 ? 'Predicting' : data.closedPrice == 0 ? 'Proceeding' : 'Closed',
+      }
+    if (parseFloat(position.stakes) == 0) return position;
+
+    position.rewards = formatEther(await contract.callStatic.getRewards(data.epoch.toNumber(), formatBytes32String(asset)));
+    return position    
   }
 
   public async getPositions(): Promise<any> {
@@ -63,8 +68,8 @@ export class Stats extends Contract {
 
     return contract.getPositions(position.pool, formatBytes32String(position.asset)).then((data: any) => {
       const items: any = [];
-      data.forEach((item: any) => {
-        items.push(this._getPosition(item));
+      data.forEach(async(item: any) => {
+        items.push(await this._getPosition(position.pool, position.asset, item));
       });
       return items;
     });

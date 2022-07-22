@@ -12,12 +12,12 @@ export const Settings: any = {
 
   Contracts: {
     4: {
-      Stats: '0x8d7F47a8Cc776c55EeF40BE1849129857DaaAE71',
+      Stats: '0x98CF2F782a17DBa4A106685533ff2E220eF46FD1',
       Escrowable: '0x1E0c3A61aC6c0dC054d880370e069Ee12c3e4C0A',
       Positions: {
         'gUSDT-BTC': {
           asset: 'BTC',
-          pool: '0xb4359Ad9C056dFA0A83DE7D1082921dE813D1B2c',
+          pool: '0x96fE8eE674B04d7DC5F708da69dC2728de127f2e',
         },
       },
     },

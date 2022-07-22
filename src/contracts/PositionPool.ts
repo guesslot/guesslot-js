@@ -51,4 +51,11 @@ export class PositionPool extends Contract {
       };
     });
   }
+
+  public async getRewards(epoch:number, asset: string): Promise<any> {
+    const contract = this._getPoolContract('gUSDT-BTC');
+    return contract.callStatic.getRewards(epoch, formatBytes32String(asset)).then((data: any) => {
+      return formatEther(data);
+    });
+  }
 }
