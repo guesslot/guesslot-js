@@ -38,28 +38,34 @@ export class Stats extends Contract {
     });
   }
 
-  private async _getPosition(pool:string, asset:string, data: any):Promise<any> {
+  private async _getPosition(pool: string, asset: string, token: string, data: any): Promise<any> {
     const contract = this.getContractFromAbi(pool, this.getAbi('PositionPool'));
-    const position:any =   {
-        epoch: data.epoch.toString().padStart(4, '0'),
-        openTime: data.openTime.toNumber(),
-        closeTime: data.closeTime.toNumber(),
-        lockedPrice: formatUnits(data.lockedPrice, 8),
-        closedPrice: formatUnits(data.closedPrice, 8),
-        stakes: formatEther(data.stakes),
-        count: data.count.toNumber(),
-        price: formatUnits(data.price, 8),
-        rewards: '0.0',
-        position: data.closedPrice == 0 ? null : Position[data.position],
-        up: data.up.count.toNumber(),
-        down: data.down.count.toNumber(),
-        flat: data[11].count.toNumber(),
-        status: data.lockedPrice == 0 ? 'Predicting' : data.closedPrice == 0 ? 'Proceeding' : 'Closed',
-      }
+    const position: any = {
+      asset: asset,
+      object: asset + '/USD',
+      token: token,
+      round: data.epoch.toString().padStart(4, '0'),
+      epoch: data.epoch.toNumber(),
+      openTime: data.openTime.toNumber(),
+      closeTime: data.closeTime.toNumber(),
+      lockedPrice: formatUnits(data.lockedPrice, 8),
+      closedPrice: formatUnits(data.closedPrice, 8),
+      stakes: formatEther(data.stakes),
+      count: data.count.toNumber(),
+      price: formatUnits(data.price, 8),
+      rewards: '0.0',
+      position: data.closedPrice == 0 ? null : Position[data.position],
+      up: data.up.count.toNumber(),
+      down: data.down.count.toNumber(),
+      flat: data[11].count.toNumber(),
+      status: data.lockedPrice == 0 ? 'Predicting' : data.closedPrice == 0 ? 'Proceeding' : 'Closed',
+    };
     if (parseFloat(position.stakes) == 0) return position;
 
-    position.rewards = formatEther(await contract.callStatic.getRewards(data.epoch.toNumber(), formatBytes32String(asset)));
-    return position    
+    position.rewards = formatEther(
+      await contract.callStatic.getRewards(data.epoch.toNumber(), formatBytes32String(asset))
+    );
+    return position;
   }
 
   public async getPositions(): Promise<any> {
@@ -68,8 +74,8 @@ export class Stats extends Contract {
 
     return contract.getPositions(position.pool, formatBytes32String(position.asset)).then((data: any) => {
       const items: any = [];
-      data.forEach(async(item: any) => {
-        items.push(await this._getPosition(position.pool, position.asset, item));
+      data.forEach(async (item: any) => {
+        items.push(await this._getPosition(position.pool, position.asset, position.token, item));
       });
       return items;
     });

@@ -35,9 +35,9 @@ export class PositionPool extends Contract {
     return contract.claim(epoch, formatBytes32String(asset));
   }
 
-  public async predict(asset: string, stakes: string, position: Position): Promise<any> {
+  public async predict(stakes: string, position: Position): Promise<any> {
     const contract = this._getPoolContract('gUSDT-BTC');
-    return contract.predict(formatBytes32String(asset), parseEther(stakes), position);
+    return contract.predict(formatBytes32String('BTC'), parseEther(stakes), position);
   }
 
   public async getBet(asset: string, account: string): Promise<any> {
@@ -52,7 +52,7 @@ export class PositionPool extends Contract {
     });
   }
 
-  public async getRewards(epoch:number, asset: string): Promise<any> {
+  public async getRewards(epoch: number, asset: string): Promise<any> {
     const contract = this._getPoolContract('gUSDT-BTC');
     return contract.callStatic.getRewards(epoch, formatBytes32String(asset)).then((data: any) => {
       return formatEther(data);

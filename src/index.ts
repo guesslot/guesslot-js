@@ -4,6 +4,7 @@ import Wallet from './wallet';
 import * as Wallets from './wallets';
 import { Settings } from './constants';
 import * as Contracts from './contracts';
+import Subgraph from './subgraph';
 
 export default class DappJS extends EventEmitter {
   [key: string]: any;
@@ -17,6 +18,9 @@ export default class DappJS extends EventEmitter {
       this[contractName] = () => {
         return new contract(this._wallet);
       };
+      this['Subgraph'] = () => {
+        return new Subgraph();
+      }
     });
   }
 

@@ -46,19 +46,19 @@ export default abstract class Contract {
     throw new Error('Module not implemented.');
   }
 
-  public async needApprove(token: string): Promise<boolean> {
+  public async needApprove(token: string, spender: string = this.getAddress()): Promise<boolean> {
     let account = this.wallet.getAccount();
     let erc20: any = this.getContractFromAbi(token, this.getAbi('ERC20'));
-    let allowance: BigNumber = await erc20.allowance(account, this.getAddress());
+    let allowance: BigNumber = await erc20.allowance(account, spender);
     let value: BigNumber = await erc20.balanceOf(account);
     if (value == BigNumber.from(0)) return true;
     return allowance.lt(value);
   }
 
-  public async approve(token: string): Promise<any> {
+  public async approve(token: string, spender: string = this.getAddress()): Promise<any> {
     let erc20: any = this.getContractFromAbi(token, this.getAbi('ERC20'));
     let amount: BigNumber = BigNumber.from('0x0000000000000000000000000000000000000000ffffffffffffffffffffffff');
-    return erc20.approve(this.getAddress(), amount);
+    return erc20.approve(spender, amount);
   }
 
   public async tokenBalanceOf(token: string, account: string): Promise<any> {

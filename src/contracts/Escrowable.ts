@@ -5,15 +5,15 @@ export class Escrowable extends Contract {
   protected name: any = 'Escrowable';
   private zeroToken = '0x0000000000000000000000000000000000000000';
 
-  public async deposit(amount: string): Promise<any> {
-    const contract = this.getContract();
+  public async deposit(token: string, amount: string): Promise<any> {
+    const contract = this.getContractFromAddress(token);
     const escrowToken = await contract.escrowToken();
     const _amount = parseEther(amount);
     return escrowToken == this.zeroToken ? contract.deposit({ value: _amount }) : contract['deposit(uint256)'](_amount);
   }
 
-  public async withdraw(amount: string): Promise<any> {
-    const contract = this.getContract();
+  public async withdraw(token: string, amount: string): Promise<any> {
+    const contract = this.getContractFromAddress(token);
     return contract.withdraw(parseEther(amount));
   }
 }
