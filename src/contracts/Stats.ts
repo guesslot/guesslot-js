@@ -60,7 +60,7 @@ export class Stats extends Contract {
       flat: data[11].count.toNumber(),
       status: data.lockedPrice == 0 ? 'Predicting' : data.closedPrice == 0 ? 'Proceeding' : 'Closed',
     };
-    if (parseFloat(position.stakes) == 0) return position;
+//     if (parseFloat(position.stakes) == 0) return position;
 
     position.rewards = formatEther(
       await contract.callStatic.getRewards(data.epoch.toNumber(), formatBytes32String(asset))
