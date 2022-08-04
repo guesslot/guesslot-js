@@ -60,7 +60,7 @@ export class Stats extends Contract {
       flat: data[11].count.toNumber(),
       status: data.lockedPrice == 0 ? 'Predicting' : data.closedPrice == 0 ? 'Proceeding' : 'Closed',
     };
-//     if (parseFloat(position.stakes) == 0) return position;
+    //     if (parseFloat(position.stakes) == 0) return position;
 
     position.rewards = formatEther(
       await contract.callStatic.getRewards(data.epoch.toNumber(), formatBytes32String(asset))
@@ -72,12 +72,12 @@ export class Stats extends Contract {
     const contract = this.getContract();
     const position = this.getSetting('Positions')['gUSDT-BTC'];
 
-    return contract.getPositions(position.pool, formatBytes32String(position.asset)).then((data: any) => {
-      const items: any = [];
-      data.forEach(async (item: any) => {
-        items.push(await this._getPosition(position.pool, position.asset, position.token, item));
-      });
-      return items;
-    });
+    const data = await contract.getPositions(position.pool, formatBytes32String(position.asset));
+
+    const items: any = [];
+    for (const i in data) {
+      items.push(await this._getPosition(position.pool, position.asset, position.token, data[i]));
+    }
+    return items;
   }
 }
