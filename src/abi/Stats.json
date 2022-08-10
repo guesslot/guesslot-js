@@ -226,6 +226,11 @@
             "type": "uint256"
           },
           {
+            "internalType": "uint256",
+            "name": "rewards",
+            "type": "uint256"
+          },
+          {
             "internalType": "enum IPositionPool.Position",
             "name": "position",
             "type": "uint8"

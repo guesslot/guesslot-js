@@ -33,7 +33,7 @@ export default class Subgraph {
         item.epoch = item.epoch;
 
         const round = item.round;
-        const positionRound = item.positionRound;
+        const positionRound = Position[item.positionRound.position];
         const positionVault = item.positionVault;
         delete item.round;
         delete item.positionRound;
@@ -42,7 +42,7 @@ export default class Subgraph {
         if (item.claimed > 0) {
           item.status = 'Claimed';
         } else if (round.status == 1) {
-          item.status = positionRound.position == item.position ? 'Won' : 'Closed';
+          item.status = positionRound == item.position ? 'Won' : 'Closed';
         } else {
           item.status = 'Predicting';
         }
@@ -51,7 +51,7 @@ export default class Subgraph {
         item.round = item.epoch.toString().padStart(4, '0');
         item.totalRewards = formatEther(round.rewards);
         item.totalStakes = formatEther(positionVault.stakes);
-        item.rewards = item.totalStakes == 0 ? 0 : (item.totalRewards * item.stakes) / item.totalStakes;
+        item.rewards = positionRound == item.position && item.totalStakes > 0 ? (item.totalRewards * item.stakes) / item.totalStakes : 0;
         items.push(item);
       });
 
@@ -72,7 +72,7 @@ export default class Subgraph {
         item.epoch = item.epoch;
 
         const round = item.round;
-        const positionRound = item.positionRound;
+        const positionRound = Position[item.positionRound.position];
         const positionVault = item.positionVault;
         delete item.round;
         delete item.positionRound;
@@ -81,7 +81,7 @@ export default class Subgraph {
         if (item.claimed > 0) {
           item.status = 'Claimed';
         } else if (round.status == 1) {
-          item.status = positionRound.position == item.position ? 'Won' : 'Closed';
+          item.status = positionRound == item.position ? 'Won' : 'Closed';
         } else {
           item.status = 'Predicting';
         }
@@ -90,7 +90,7 @@ export default class Subgraph {
         item.round = item.epoch.toString().padStart(4, '0');
         item.totalRewards = formatEther(round.rewards);
         item.totalStakes = formatEther(positionVault.stakes);
-        item.rewards = item.totalStakes == 0 ? 0 : (item.totalRewards * item.stakes) / item.totalStakes;
+        item.rewards = positionRound == item.position && item.totalStakes > 0 ? (item.totalRewards * item.stakes) / item.totalStakes : 0;
         items.push(item);
       });
 

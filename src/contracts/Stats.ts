@@ -53,7 +53,7 @@ export class Stats extends Contract {
       stakes: formatEther(data.stakes),
       count: data.count.toNumber(),
       price: formatUnits(data.price, 8),
-      rewards: '0.0',
+      rewards: formatEther(data.rewards),
       position: data.closedPrice == 0 ? null : Position[data.position],
       up: data.up.count.toNumber(),
       down: data.down.count.toNumber(),
@@ -62,9 +62,12 @@ export class Stats extends Contract {
     };
     //     if (parseFloat(position.stakes) == 0) return position;
 
-    position.rewards = formatEther(
-      await contract.callStatic.getRewards(data.epoch.toNumber(), formatBytes32String(asset))
-    );
+    if (position.status == 'Predicting') {
+      position.rewards = formatEther(
+        await contract.callStatic.getRewards(data.epoch.toNumber(), formatBytes32String(asset))
+      );
+    }
+
     return position;
   }
 
