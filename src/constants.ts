@@ -12,7 +12,7 @@ export const Settings: any = {
 
   Contracts: {
     4: {
-      Stats: '0xef72873d0Abb873fb7c9A34EC68B16F6447cC4Ae',
+      Stats: '0x1f7bF828E710408180bC9447fcd0729D41Fd53CE',
       Positions: {
         'gUSDT-BTC': {
           token: 'gUSDT',

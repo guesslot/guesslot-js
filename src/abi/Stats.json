@@ -212,6 +212,11 @@
           },
           {
             "internalType": "uint256",
+            "name": "lastPrice",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
             "name": "stakes",
             "type": "uint256"
           },
