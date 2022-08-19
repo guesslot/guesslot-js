@@ -50,7 +50,7 @@ export class Stats extends Contract {
       closeTime: data.closeTime.toNumber(),
       lockedTime: data.closeTime.toNumber(),
       lockedPrice: formatUnits(data.lockedPrice, 8),
-      closedTime: data.closeTime.toNumber() + 3600 * 24 * 7,
+      closedTime: data.closeTime.toNumber() + data.closeTime.toNumber() - data.openTime.toNumber(),
       closedPrice: formatUnits(data.closedPrice, 8),
       lastPrice: formatUnits(data.lastPrice, 8),
       stakes: formatEther(data.stakes),
