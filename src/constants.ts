@@ -17,7 +17,7 @@ export const Settings: any = {
         'gUSDT-BTC': {
           token: 'gUSDT',
           asset: 'BTC',
-          pool: '0xc65756eE3c7ADBd843bA8739612b612A94F5F473',
+          pool: '0x6e9d79a0aB624E11432B3B1CD123d169195b926b',
         },
       },
     },
