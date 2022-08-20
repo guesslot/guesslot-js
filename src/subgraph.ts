@@ -51,7 +51,10 @@ export default class Subgraph {
         item.round = item.epoch.toString().padStart(4, '0');
         item.totalRewards = formatEther(round.rewards);
         item.totalStakes = formatEther(positionVault.stakes);
-        item.rewards = positionRound == item.position && item.totalStakes > 0 ? (item.totalRewards * item.stakes) / item.totalStakes : 0;
+        item.rewards =
+          positionRound == item.position && item.totalStakes > 0
+            ? (item.totalRewards * item.stakes) / item.totalStakes
+            : 0;
         items.push(item);
       });
 
@@ -90,7 +93,10 @@ export default class Subgraph {
         item.round = item.epoch.toString().padStart(4, '0');
         item.totalRewards = formatEther(round.rewards);
         item.totalStakes = formatEther(positionVault.stakes);
-        item.rewards = positionRound == item.position && item.totalStakes > 0 ? (item.totalRewards * item.stakes) / item.totalStakes : 0;
+        item.rewards =
+          positionRound == item.position && item.totalStakes > 0
+            ? (item.totalRewards * item.stakes) / item.totalStakes
+            : 0;
         items.push(item);
       });
 

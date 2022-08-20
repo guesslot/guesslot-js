@@ -60,7 +60,7 @@ export class Stats extends Contract {
       position: data.closedPrice == 0 ? null : Position[data.position],
       up: data.up.count.toNumber(),
       down: data.down.count.toNumber(),
-      flat: data[11].count.toNumber(),
+      flat: data[13].count.toNumber(),
       status: data.lockedPrice == 0 ? 'Predicting' : data.closedPrice == 0 ? 'Proceeding' : 'Closed',
     };
     //     if (parseFloat(position.stakes) == 0) return position;
