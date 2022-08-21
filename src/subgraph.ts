@@ -22,7 +22,7 @@ export default class Subgraph {
 
   public async getWinners(skip: number = 0): Promise<any> {
     const query: string =
-      'query ($skip: Int!) {data:positionPredicts(first: 1000, skip: $skip where: { positionRound_: { status: 0 }}) { hash account epoch asset stakes position claimed time round {token stakes rewards status} positionRound {position status} positionVault {stakes}}}';
+      'query ($skip: Int!) {data:positionPredicts(first: 1000, skip: $skip where: { positionRound_: { status: 1 }}) { hash account epoch asset stakes position claimed time round {token stakes rewards status} positionRound {position status} positionVault {stakes}}}';
     return this.request(query, { skip: skip }).then((data: any) => {
       const items: any = [];
 
@@ -34,28 +34,30 @@ export default class Subgraph {
 
         const round = item.round;
         const positionRound = Position[item.positionRound.position];
-        const positionVault = item.positionVault;
-        delete item.round;
-        delete item.positionRound;
-        delete item.positionVault;
+        if (positionRound == item.position) {
+          const positionVault = item.positionVault;
+          delete item.round;
+          delete item.positionRound;
+          delete item.positionVault;
 
-        if (item.claimed > 0) {
-          item.status = 'Claimed';
-        } else if (round.status == 1) {
-          item.status = positionRound == item.position ? 'Won' : 'Closed';
-        } else {
-          item.status = 'Predicting';
+          if (item.claimed > 0) {
+            item.status = 'Claimed';
+          } else if (round.status == 1) {
+            item.status = positionRound == item.position ? 'Won' : 'Closed';
+          } else {
+            item.status = 'Predicting';
+          }
+
+          item.pool = round.token;
+          item.round = item.epoch.toString().padStart(4, '0');
+          item.totalRewards = formatEther(round.rewards);
+          item.totalStakes = formatEther(positionVault.stakes);
+          item.rewards =
+            positionRound == item.position && item.totalStakes > 0
+              ? (item.totalRewards * item.stakes) / item.totalStakes
+              : 0;
+          items.push(item);
         }
-
-        item.pool = round.token;
-        item.round = item.epoch.toString().padStart(4, '0');
-        item.totalRewards = formatEther(round.rewards);
-        item.totalStakes = formatEther(positionVault.stakes);
-        item.rewards =
-          positionRound == item.position && item.totalStakes > 0
-            ? (item.totalRewards * item.stakes) / item.totalStakes
-            : 0;
-        items.push(item);
       });
 
       return items;
