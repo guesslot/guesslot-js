@@ -22,7 +22,7 @@ export default class Subgraph {
 
   public async getWinners(skip: number = 0): Promise<any> {
     const query: string =
-      'query ($skip: Int!) {data:positionPredicts(first: 1000, skip: $skip where: { positionRound_: { status: 1 }}) { hash account epoch asset stakes position claimed time round {token stakes rewards status} positionRound {position status} positionVault {stakes}}}';
+      'query ($skip: Int!) {data:positionPredicts(first: 1000, skip: $skip, orderBy: time, orderDirection: desc, where: { positionRound_: { status: 1 }}) { hash account epoch asset stakes position claimed time round {token stakes rewards status} positionRound {position status} positionVault {stakes}}}';
     return this.request(query, { skip: skip }).then((data: any) => {
       const items: any = [];
 
@@ -66,7 +66,7 @@ export default class Subgraph {
 
   public async getHistory(account: string, skip: number = 0): Promise<any> {
     const query: string =
-      'query ($account: String!, $skip: Int!) {data:positionPredicts(first: 1000, skip: $skip where: {account: $account}) { hash account epoch asset stakes position claimed time round {token stakes rewards status} positionRound {position status} positionVault {stakes}}}';
+      'query ($account: String!, $skip: Int!) {data:positionPredicts(first: 1000, skip: $skip, orderBy: time, orderDirection: desc, where: {account: $account}) { hash account epoch asset stakes position claimed time round {token stakes rewards status} positionRound {position status} positionVault {stakes}}}';
     return this.request(query, { account: account, skip: skip }).then((data: any) => {
       const items: any = [];
 
