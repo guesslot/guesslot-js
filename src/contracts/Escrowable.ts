@@ -1,4 +1,4 @@
-import { formatEther, formatUnits, parseEther } from '@ethersproject/units';
+import { formatEther, parseEther } from '@ethersproject/units';
 import Contract from '../contract';
 
 export class Escrowable extends Contract {
