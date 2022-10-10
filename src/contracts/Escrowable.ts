@@ -1,4 +1,4 @@
-import { parseEther } from '@ethersproject/units';
+import { formatEther, parseEther } from '@ethersproject/units';
 import Contract from '../contract';
 
 export class Escrowable extends Contract {
@@ -15,5 +15,12 @@ export class Escrowable extends Contract {
   public async withdraw(token: string, amount: string): Promise<any> {
     const contract = this.getContractFromAddress(token);
     return contract.withdraw(parseEther(amount));
+  }
+
+  public async totalDeposits(token: string): Promise<any> {
+    const contract = this.getContractFromAddress(token);
+    return contract.callStatic.totalDeposits().then((data: any) => {
+      return formatEther(data);
+    });
   }
 }
