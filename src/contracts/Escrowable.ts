@@ -1,4 +1,4 @@
-import { formatEther, parseEther } from '@ethersproject/units';
+import { formatEther, formatUnits, parseEther } from '@ethersproject/units';
 import Contract from '../contract';
 
 export class Escrowable extends Contract {
@@ -21,6 +21,16 @@ export class Escrowable extends Contract {
     const contract = this.getContractFromAddress(token);
     return contract.callStatic.totalDeposits().then((data: any) => {
       return formatEther(data);
+    });
+  }
+
+  public async balanceOfUnderlying(token: string): Promise<any> {
+    const contract = this.getContractFromAddress(token);
+    return contract.escrowPool().then((data: any) => {
+      const contract = this.getContractFromAbi(data, this.getAbi('LendingPool'));
+      return contract.callStatic.balanceOfUnderlying(data).then((data: any) => {
+        return formatUnits(data, 6);
+      });
     });
   }
 }

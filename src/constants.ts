@@ -23,12 +23,12 @@ export const Settings: any = {
     //   },
     // },
     5: {
-      Stats: '0x2266b3d360fc11A6C2f3036DB0992A63645202E0',
+      Stats: '0x2dbcE4705aB0B6bE71595AD4DD27862Ac2117741',
       Positions: {
         'gUSDT-BTC': {
           token: 'gUSDT',
           asset: 'BTC',
-          pool: '0xFe29de4E91F829BA4e0C2E575C5E827e95f68790',
+          pool: '0x6A3879F448Ce7cc728Bb3aE82a8433B781FF4B4D',
         },
       },
     },
