@@ -65,7 +65,7 @@ export class Stats extends Contract {
     };
     //     if (parseFloat(position.stakes) == 0) return position;
 
-    if (position.status == 'Predicting') {
+    if (position.status == 'Proceeding') {
       try {
         position.rewards = formatEther(
           await contract.callStatic.getRewards(data.epoch.toNumber(), formatBytes32String(asset))

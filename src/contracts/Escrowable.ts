@@ -24,13 +24,10 @@ export class Escrowable extends Contract {
     });
   }
 
-  public async balanceOfUnderlying(token: string): Promise<any> {
+  public async totalInterests(token: string): Promise<any> {
     const contract = this.getContractFromAddress(token);
-    return contract.escrowPool().then((data: any) => {
-      const contract = this.getContractFromAbi(data, this.getAbi('LendingPool'));
-      return contract.callStatic.balanceOfUnderlying(data).then((data: any) => {
-        return formatUnits(data, 6);
-      });
+    return contract.callStatic.totalInterests().then((data: any) => {
+      return formatEther(data);
     });
   }
 }
