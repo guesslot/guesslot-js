@@ -71,7 +71,7 @@ export default class Subgraph {
       const items: any = [];
 
       data.forEach((item: any) => {
-        item.object = item.asset + '/USDT';
+        item.object = item.asset + '/USD';
         item.position = Position[item.position];
         item.stakes = formatEther(item.stakes);
         item.epoch = item.epoch;

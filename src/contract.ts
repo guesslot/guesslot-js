@@ -50,8 +50,8 @@ export default abstract class Contract {
     let account = this.wallet.getAccount();
     let erc20: any = this.getContractFromAbi(token, this.getAbi('ERC20'));
     let allowance: BigNumber = await erc20.allowance(account, spender);
+    if (allowance == BigNumber.from(0)) return true;
     let value: BigNumber = await erc20.balanceOf(account);
-    if (value == BigNumber.from(0)) return true;
     return allowance.lt(value);
   }
 
